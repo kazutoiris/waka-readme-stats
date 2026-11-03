@@ -3,10 +3,6 @@ dependencies:
   - changed-files:
     - any-glob-to-any-file: "requirements.txt"
 
-docker:
-  - changed-files:
-    - any-glob-to-any-file: "Dockerfile"
-
 documentation:
   - changed-files:
     - any-glob-to-any-file: "**/*.md"

@@ -218,8 +218,65 @@ inputs:
     default: ${{ runner.debug }}
 
 runs:
-  using: 'docker'
-  image: 'docker://wakareadmestats/waka-readme-stats:master'
+  using: 'composite'
+  steps:
+    - name: Setup Python 🐍
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.13'
+        cache-dependency-path: ${{ github.action_path }}/requirements.txt
+
+    - name: Install Dependencies 📥
+      shell: bash
+      run: pip install -r ${{ github.action_path }}/requirements.txt
+
+    - name: Run Action 🧪
+      shell: bash
+      run: python3 ${{ github.action_path }}/sources/main.py
+      env:
+        INPUT_GH_TOKEN: ${{ inputs.GH_TOKEN }}
+        INPUT_PUSH_TOKEN: ${{ inputs.PUSH_TOKEN }}
+        INPUT_WAKATIME_API_KEY: ${{ inputs.WAKATIME_API_KEY }}
+        INPUT_WAKATIME_API_URL: ${{ inputs.WAKATIME_API_URL }}
+        INPUT_SECTION_NAME: ${{ inputs.SECTION_NAME }}
+        INPUT_PULL_BRANCH_NAME: ${{ inputs.PULL_BRANCH_NAME }}
+        INPUT_PUSH_BRANCH_NAME: ${{ inputs.PUSH_BRANCH_NAME }}
+        INPUT_SHOW_OS: ${{ inputs.SHOW_OS }}
+        INPUT_SHOW_PROJECTS: ${{ inputs.SHOW_PROJECTS }}
+        INPUT_SHOW_EDITORS: ${{ inputs.SHOW_EDITORS }}
+        INPUT_SHOW_TIMEZONE: ${{ inputs.SHOW_TIMEZONE }}
+        INPUT_SHOW_COMMIT: ${{ inputs.SHOW_COMMIT }}
+        INPUT_SHOW_LANGUAGE: ${{ inputs.SHOW_LANGUAGE }}
+        INPUT_SHOW_LINES_OF_CODE: ${{ inputs.SHOW_LINES_OF_CODE }}
+        INPUT_SHOW_LANGUAGE_PER_REPO: ${{ inputs.SHOW_LANGUAGE_PER_REPO }}
+        INPUT_SHOW_LOC_CHART: ${{ inputs.SHOW_LOC_CHART }}
+        INPUT_SHOW_DAYS_OF_WEEK: ${{ inputs.SHOW_DAYS_OF_WEEK }}
+        INPUT_SHOW_PROFILE_VIEWS: ${{ inputs.SHOW_PROFILE_VIEWS }}
+        INPUT_SHOW_SHORT_INFO: ${{ inputs.SHOW_SHORT_INFO }}
+        INPUT_SHOW_UPDATED_DATE: ${{ inputs.SHOW_UPDATED_DATE }}
+        INPUT_SHOW_TOTAL_CODE_TIME: ${{ inputs.SHOW_TOTAL_CODE_TIME }}
+        INPUT_SHOW_AI_CODE_TIME: ${{ inputs.SHOW_AI_CODE_TIME }}
+        INPUT_SHOW_AI_CODING: ${{ inputs.SHOW_AI_CODING }}
+        INPUT_COMMIT_BY_ME: ${{ inputs.COMMIT_BY_ME }}
+        INPUT_COMMIT_MESSAGE: ${{ inputs.COMMIT_MESSAGE }}
+        INPUT_COMMIT_USERNAME: ${{ inputs.COMMIT_USERNAME }}
+        INPUT_COMMIT_EMAIL: ${{ inputs.COMMIT_EMAIL }}
+        INPUT_COMMIT_SINGLE: ${{ inputs.COMMIT_SINGLE }}
+        INPUT_LOCALE: ${{ inputs.LOCALE }}
+        INPUT_UPDATED_DATE_FORMAT: ${{ inputs.UPDATED_DATE_FORMAT }}
+        INPUT_IGNORED_REPOS: ${{ inputs.IGNORED_REPOS }}
+        INPUT_MAX_REPOS: ${{ inputs.MAX_REPOS }}
+        INPUT_MAX_CAP: ${{ inputs.MAX_CAP }}
+        INPUT_SYMBOL_VERSION: ${{ inputs.SYMBOL_VERSION }}
+        INPUT_BADGE_STYLE: ${{ inputs.BADGE_STYLE }}
+        INPUT_FORCE_ADD: ${{ inputs.FORCE_ADD }}
+        INPUT_BAR_STYLE: ${{ inputs.BAR_STYLE }}
+        INPUT_BAR_COLOR: ${{ inputs.BAR_COLOR }}
+        INPUT_BAR_TRACK_COLOR: ${{ inputs.BAR_TRACK_COLOR }}
+        INPUT_TEXT_PRIMARY_COLOR: ${{ inputs.TEXT_PRIMARY_COLOR }}
+        INPUT_TEXT_SECONDARY_COLOR: ${{ inputs.TEXT_SECONDARY_COLOR }}
+        INPUT_BAR_RADIUS: ${{ inputs.BAR_RADIUS }}
+        INPUT_DEBUG_LOGGING: ${{ inputs.DEBUG_LOGGING }}
 
 branding:
   icon: 'activity'
